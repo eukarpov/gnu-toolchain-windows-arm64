@@ -133,6 +133,8 @@ jobs:
             crt: ucrt
           - platform: pc-cygwin
             crt: libc
+          - platform: pc-cygwin
+            arch: aarch64
 
     outputs:
       toolchain-package-name: ${{ steps.build.outputs.toolchain-package-name }}
@@ -325,7 +327,7 @@ jobs:
       fail-fast: false
       matrix:
         arch: [aarch64]
-        platform: [w64-mingw32, pc-cygwin]
+        platform: [w64-mingw32]
         crt: [msvcrt]
 
     env:
@@ -396,7 +398,7 @@ jobs:
       fail-fast: false
       matrix:
         arch: [aarch64]
-        platform: [w64-mingw32, pc-cygwin]
+        platform: [w64-mingw32]
         crt: [msvcrt]
 
     env:
@@ -463,6 +465,7 @@ jobs:
           .github/scripts/tests/cygwin/execute-tests.sh
 
   execute-cygwin-tests:
+    if: false
     needs: [
       build-toolchain
     ]
@@ -471,7 +474,6 @@ jobs:
     #  - There must be user `runner` created in the WSL as the primary one.
     #  - This `runner` user must be able to perform `sudo apt` without blocking terminal.
     # Disable the job for now as there is no suitable runner to execute it.
-    if: ${{ false }}
     runs-on: [Windows, WSL, ARM64]
 
     defaults:
