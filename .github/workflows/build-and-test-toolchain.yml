@@ -96,7 +96,7 @@ jobs:
           Write-Output "timestamp=$((Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ"))" >> "$env:GITHUB_OUTPUT"
 
       - name: Setup WSL
-        uses: Windows-on-ARM-Experiments/setup-wsl@master
+        uses: eukarpov/setup-wsl@master
         with:
           distribution: Ubuntu-22.04
           additional-packages:
