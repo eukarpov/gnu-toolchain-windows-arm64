@@ -22,9 +22,6 @@ on:
         required: true
         default: 'rebase-upstream-backup'
 
-permissions:
-  repository-projects: write
-
 env:
   BINUTILS_REPO: eukarpov/binutils-woarm64
   BINUTILS_UPSTREAM_URL: git://sourceware.org/git/binutils-gdb.git
