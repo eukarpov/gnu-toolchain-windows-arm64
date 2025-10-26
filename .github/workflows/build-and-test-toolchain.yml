@@ -122,8 +122,8 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: ${{ steps.get-wsl-paths.outputs.ccache-dir-path-win }}
-          key: build-and-test-gcc-ccache-${{ steps.get-cache-key.outputs.timestamp }}
-          restore-keys: build-and-test-gcc-ccache-
+          key: build-and-test-gcc-ccache
+          restore-keys: build-and-test-gcc-ccache
 
       - name: Build toolchain
         run: |
@@ -134,7 +134,7 @@ jobs:
         uses: actions/cache/save@v4
         with:
           path: ${{ steps.get-wsl-paths.outputs.ccache-dir-path-win }}
-          key: build-and-test-gcc-ccache-${{ steps.get-cache-key.outputs.timestamp }}
+          key: build-and-test-gcc-ccache
 
       - name: Execute GCC tests
         run: |
