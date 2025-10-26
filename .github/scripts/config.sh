@@ -5,16 +5,16 @@ set -x # echo on
 set -o pipefail # fail of any command in pipeline is an error
 
 # Branches that will be used for build when UPDATE_SOURCES=1.
-BINUTILS_REPO=${BINUTILS_REPO:-eukarpov/binutils-woarm64}
+BINUTILS_REPO=${BINUTILS_REPO:-eukarpov/binutils-windows-arm64}
 BINUTILS_BRANCH=${BINUTILS_BRANCH:-woarm64}
 
-GCC_REPO=${GCC_REPO:-eukarpov/gcc-woarm64}
+GCC_REPO=${GCC_REPO:-eukarpov/gcc-windows-arm64}
 GCC_BRANCH=${GCC_BRANCH:-woarm64}
 
 MINGW_REPO=${MINGW_REPO:-eukarpov/mingw-woarm64}
 MINGW_BRANCH=${MINGW_BRANCH:-woarm64}
 
-CYGWIN_REPO=${CYGWIN_REPO:-eukarpov/newlib-cygwin}
+CYGWIN_REPO=${CYGWIN_REPO:-eukarpov/cygwin-windows-arm64}
 CYGWIN_BRANCH=${CYGWIN_BRANCH:-woarm64}
 
 CYGWIN_PACKAGES_REPO=${CYGWIN_PACKAGES_REPO:-eukarpov/cygwin-packages}
