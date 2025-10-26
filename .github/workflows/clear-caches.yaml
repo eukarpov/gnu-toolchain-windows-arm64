@@ -1,0 +1,18 @@
+name: Clear Caches
+
+on:
+  workflow_dispatch:
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GNU_TOOLCHAIN_CACHES }}
+
+jobs:
+  clear-caches:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: List and delete all caches
+        run: |
+          .github/scripts/clear-caches.sh
