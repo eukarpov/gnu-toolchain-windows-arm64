@@ -1,6 +1,6 @@
 # Windows on Arm64 GNU Toolchain Cross-Compiler
 
-[![Build main toolchain](https://github.com/eukarpov/mingw-woarm64-build/actions/workflows/main.yml/badge.svg)](https://github.com/eukarpov/mingw-woarm64-build/actions/workflows/main.yml) [![Build toolchain variants](https://github.com/eukarpov/mingw-woarm64-build/actions/workflows/advanced.yml/badge.svg)](https://github.com/eukarpov/mingw-woarm64-build/actions/workflows/advanced.yml) [![Daily rebase](https://github.com/eukarpov/mingw-woarm64-build/actions/workflows/rebase.yml/badge.svg)](https://github.com/eukarpov/mingw-woarm64-build/actions/workflows/rebase.yml)
+[![Build main toolchain](https://github.com/eukarpov/gnu-toolchain-windows-arm64/actions/workflows/main.yml/badge.svg)](https://github.com/eukarpov/gnu-toolchain-windows-arm64/actions/workflows/main.yml) [![Build toolchain variants](https://github.com/eukarpov/gnu-toolchain-windows-arm64/actions/workflows/advanced.yml/badge.svg)](https://github.com/eukarpov/gnu-toolchain-windows-arm64/actions/workflows/advanced.yml) [![Daily rebase](https://github.com/eukarpov/gnu-toolchain-windows-arm64/actions/workflows/rebase.yml/badge.svg)](https://github.com/eukarpov/gnu-toolchain-windows-arm64/actions/workflows/rebase.yml)
 
 This repository contains scripts for building an `aarch64-w64-mingw32` target Windows on Arm64
 GNU toolchain cross-compiler for `x86_64-pc-linux-gnu` or `aarch64-pc-linux-gnu` hosts.
@@ -12,15 +12,15 @@ Ubuntu 22.04 GitHub Actions runners and Ubuntu 22.04 in WSL.
 # Known Issues
 
 This toolchain is not yet ready for real-world use. Problems and missing parts are listed in
-the [issues](https://github.com/eukarpov/mingw-woarm64-build/issues). Please,
+the [issues](https://github.com/eukarpov/gnu-toolchain-windows-arm64/issues). Please,
 report all issues, even if the issue is, e.g., GCC-specific, here.
 
 # Installing Build Dependencies
 
-The [main build script](https://github.com/eukarpov/mingw-woarm64-build/blob/main/build.sh)
+The [main build script](https://github.com/eukarpov/gnu-toolchain-windows-arm64/blob/main/build.sh)
 installs its dependencies automatically when the `RUN_BOOTSTRAP=1` environment variable is defined,
 which is the default. To see what will be installed refer to
-[`.github/scripts/install-dependencies.sh`](https://github.com/eukarpov/mingw-woarm64-build/blob/main/.github/scripts/install-dependencies.sh).
+[`.github/scripts/install-dependencies.sh`](https://github.com/eukarpov/gnu-toolchain-windows-arm64/blob/main/.github/scripts/install-dependencies.sh).
 
 # Building the Cross-Compiler
 
@@ -29,12 +29,12 @@ follow these steps:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/eukarpov/mingw-woarm64-build.git
+   git clone https://github.com/eukarpov/gnu-toolchain-windows-arm64.git
    ```
 
 2. Navigate to the root repository folder:
    ```bash
-   cd mingw-woarm64-build
+   cd gnu-toolchain-windows-arm64
    ```
 
 3. Run the build script:
@@ -58,9 +58,10 @@ The build script does multiple things:
 
 - Installs the dependency Ubuntu packages.
 - Clones several dependency source code repositories:
-  - modified binutils from [eukarpov/binutils-woarm64](https://github.com/eukarpov/binutils-woarm64),
-  - modified GCC from [eukarpov/gcc-woarm64](https://github.com/eukarpov/gcc-woarm64),
-  - modified MinGW from [eukarpov/mingw-woarm64](https://github.com/eukarpov/mingw-woarm64).
+  - modified binutils from [eukarpov/binutils-windows-arm64](https://github.com/eukarpov/binutils-windows-arm64),
+  - modified GCC from [eukarpov/gcc-windows-arm64](https://github.com/eukarpov/gcc-windows-arm64),
+  - modified MinGW from [eukarpov/mingw-windows-arm64](https://github.com/eukarpov/mingw-windows-arm64).
+  - modified Cygwin from [eukarpov/cygwin-windows-arm64](https://github.com/eukarpov/cygwin-windows-arm64).
 - Bootstraps the binutils and GCC sources with `gmp`, `mpfr`, `isl`, etc. dependencies.
 - Builds and installs binutils, stage 1 GCC, MinGW runtimes, GCC with libgcc, and then
   the entire MinGW.
@@ -83,8 +84,8 @@ into the `tests/build/bin` folder.
 
 # Testing the Toolchain
 
-We are [testing](https://github.com/eukarpov/mingw-woarm64-build/actions/workflows/build-and-test-toolchain.yml)
-the toolchain binaries with the GCC test suite and against [four example projects builds](https://github.com/eukarpov/mingw-woarm64-build/actions/workflows/advanced.yml)
+We are [testing](https://github.com/eukarpov/gnu-toolchain-windows-arm64/actions/workflows/build-and-test-toolchain.yml)
+the toolchain binaries with the GCC test suite and against [four example projects builds](https://github.com/eukarpov/gnu-toolchain-windows-arm64/actions/workflows/advanced.yml)
 ([OpenSSL](https://openssl-library.org/), [FFmpeg](https://ffmpeg.org/),
 [OpenBLAS](https://github.com/OpenMathLib/OpenBLAS), [libjpeg-turbo](https://github.com/libjpeg-turbo/libjpeg-turbo))
 and their testing suites.

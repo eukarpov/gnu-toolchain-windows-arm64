@@ -23,13 +23,13 @@ on:
         default: 'rebase-upstream-backup'
 
 env:
-  BINUTILS_REPO: eukarpov/binutils-woarm64
+  BINUTILS_REPO: eukarpov/binutils-windows-arm64
   BINUTILS_UPSTREAM_URL: git://sourceware.org/git/binutils-gdb.git
-  GCC_REPO: eukarpov/gcc-woarm64
+  GCC_REPO: eukarpov/gcc-windows-arm64
   GCC_UPSTREAM_URL: git://gcc.gnu.org/git/gcc.git
-  MINGW_REPO: eukarpov/mingw-woarm64
+  MINGW_REPO: eukarpov/mingw-windows-arm64
   MINGW_UPSTREAM_URL: https://git.code.sf.net/p/mingw-w64/mingw-w64
-  CYGWIN_REPO: eukarpov/newlib-cygwin
+  CYGWIN_REPO: eukarpov/cygwin-windows-arm64
   CYGWIN_UPSTREAM_URL: git://sourceware.org/git/newlib-cygwin.git
 
   SOURCE_PATH: ${{ github.workspace }}/code

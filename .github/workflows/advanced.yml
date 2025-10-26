@@ -139,7 +139,7 @@ jobs:
     steps:
       - name: Build toolchain
         id: build
-        uses: eukarpov/mingw-woarm64-build/actions/build-toolchain@main
+        uses: eukarpov/gnu-toolchain-windows-arm64/actions/build-toolchain@main
         with:
           arch: ${{ matrix.arch }}
           platform: ${{ matrix.platform }}

@@ -61,7 +61,7 @@ on:
         type: string
 
 env:
-  GCC_REPO: eukarpov/gcc-woarm64
+  GCC_REPO: eukarpov/gcc-windows-arm64
   GCC_BRANCH: ${{ inputs.gcc_branch_changes || 'woarm64' }}
 
   SOURCE_PATH: ${{ github.workspace }}/code
