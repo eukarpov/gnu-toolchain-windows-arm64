@@ -1,9 +1,10 @@
-# Windows on Arm64 GNU Toolchain Cross-Compiler
+# Linux-Hosted GNU Cross-Toolchain for Windows Arm64 (MinGW/Cygwin)
 
 [![Build main toolchain](https://github.com/eukarpov/gnu-toolchain-windows-arm64/actions/workflows/main.yml/badge.svg)](https://github.com/eukarpov/gnu-toolchain-windows-arm64/actions/workflows/main.yml) [![Build toolchain variants](https://github.com/eukarpov/gnu-toolchain-windows-arm64/actions/workflows/advanced.yml/badge.svg)](https://github.com/eukarpov/gnu-toolchain-windows-arm64/actions/workflows/advanced.yml) [![Daily rebase](https://github.com/eukarpov/gnu-toolchain-windows-arm64/actions/workflows/rebase.yml/badge.svg)](https://github.com/eukarpov/gnu-toolchain-windows-arm64/actions/workflows/rebase.yml)
 
-This repository contains scripts for building an `aarch64-w64-mingw32` target Windows on Arm64
-GNU toolchain cross-compiler for `x86_64-pc-linux-gnu` or `aarch64-pc-linux-gnu` hosts.
+GNU Cross-Toolchain for Windows Arm64 with MinGW (`aarch64-w64-mingw32`) and Cygwin
+(`aarch64-pc-cygwin`) targets on Linux hosts (`x86_64-pc-linux-gnu` or
+`aarch64-pc-linux-gnu`).
 It is a **work in progress**, with ongoing efforts to upstream the necessary changes to
 the corresponding repositories. The resulting toolchain produces binaries that can be executed
 on Windows on Arm64 and are built on Linux. The scripts are actively tested on the default
@@ -42,14 +43,20 @@ follow these steps:
    ./build.sh
    ```
 
-To install the toolchain into a different folder you can use the `TOOLCHAIN_PATH` environment
-variable:
+The toolchain uses the `aarch64-w64-mingw32` target by default. The `PLATFORM`
+variable should be specified to change the target to `aarch64-pc-cygwin`.
+```bash
+PLATFORM=pc-cygwin ./build.sh
+```
+
+To install the toolchain into a different folder `TOOLCHAIN_PATH` environment
+variable should be used:
 ```bash
 TOOLCHAIN_PATH=/opt/aarch64-w64-mingw32 ./build.sh
 ```
 
 To skip the dependencies bootstrapping process and fetching source code repositories for consecutive
-builds you can use other environment variables:
+builds `RUN_BOOTSTRAP` and `UPDATE_SOURCES` environment variables should be used:
 ```bash
 RUN_BOOTSTRAP=0 UPDATE_SOURCES=0 ./build.sh
 ```
@@ -74,23 +81,23 @@ export PATH="~/cross-aarch64-w64-mingw32-msvcrt/bin:$PATH"
 aarch64-w64-mingw32-gcc hello.c -o hello.exe
 ```
 
-You can also build a set of basic AArch64-specific tests using:
+To build a set of basic AArch64-specific tests:
 ```bash
 .github/scripts/tests/build.sh
 ```
 
-This step requires a working CMake executable in your environment and will place the resulting binaries
+The test script requires a working CMake executable in the environment and will place the resulting binaries
 into the `tests/build/bin` folder.
 
 # Testing the Toolchain
 
-We are [testing](https://github.com/eukarpov/gnu-toolchain-windows-arm64/actions/workflows/build-and-test-toolchain.yml)
-the toolchain binaries with the GCC test suite and against [four example projects builds](https://github.com/eukarpov/gnu-toolchain-windows-arm64/actions/workflows/advanced.yml)
+The toolchain is [tested](https://github.com/eukarpov/gnu-toolchain-windows-arm64/actions/workflows/build-and-test-toolchain.yml)
+with the GCC test suite and against [four example projects builds](https://github.com/eukarpov/gnu-toolchain-windows-arm64/actions/workflows/advanced.yml)
 ([OpenSSL](https://openssl-library.org/), [FFmpeg](https://ffmpeg.org/),
 [OpenBLAS](https://github.com/OpenMathLib/OpenBLAS), [libjpeg-turbo](https://github.com/libjpeg-turbo/libjpeg-turbo))
 and their testing suites.
 
-As of 2024/08/09 we are reaching the following level of quality with the GCC testing targeting
+As of 2024/08/09 the toolchain has reached the following level of quality with the GCC testing targeting
 armv8-a without optional extensions such as SVE:
 
 | Metric               | Count  |
