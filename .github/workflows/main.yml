@@ -48,8 +48,8 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: ${{ env.CCACHE_DIR_PATH }}
-          key: main-gcc-ccache-${{ steps.get-cache-key.outputs.timestamp }}
-          restore-keys: main-gcc-ccache-
+          key: main-gcc-ccache
+          restore-keys: main-gcc-ccache
 
       - name: Run Build
         run: |
@@ -64,7 +64,7 @@ jobs:
         uses: actions/cache/save@v4
         with:
           path: ${{ env.CCACHE_DIR_PATH }}
-          key: main-gcc-ccache-${{ steps.get-cache-key.outputs.timestamp }}
+          key: main-gcc-ccache
 
       - name: Upload build folder
         if: failure()
