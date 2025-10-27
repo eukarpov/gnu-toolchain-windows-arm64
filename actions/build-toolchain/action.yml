@@ -92,7 +92,6 @@ runs:
 
     - name: Cache toolchain
       id: cache-toolchain
-      if: ${{ env.PACK_TOOLCHAIN == 'true' }}
       uses: actions/cache@v4
       with:
         path: ${{ env.RELATIVE_ARTIFACT_PATH }}/${{ env.TOOLCHAIN_PACKAGE_NAME }}
@@ -101,7 +100,7 @@ runs:
 
     - name: Cache runtime
       id: cache-runtime
-      if: ${{ env.PACK_TOOLCHAIN == 'true' }}
+      if: ${{ steps.cache-toolchain.outputs.cache-hit != 'true' }}
       uses: actions/cache@v4
       with:
         path: ${{ env.RELATIVE_ARTIFACT_PATH }}/${{ env.RUNTIME_PACKAGE_NAME }}
@@ -277,7 +276,7 @@ runs:
         .github/scripts/strip-host-binaries.sh
 
     - name: Pack toolchain
-      if: ${{ steps.cache-toolchain.outputs.cache-hit != 'true' && env.PACK_TOOLCHAIN == 'true' }}
+      if: ${{ steps.cache-toolchain.outputs.cache-hit != 'true' }}
       shell: bash
       run: |
         .github/scripts/toolchain/pack.sh
