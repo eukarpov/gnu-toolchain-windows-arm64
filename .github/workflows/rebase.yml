@@ -1,4 +1,4 @@
-name: Daily rebase
+name: Daily Rebase
 
 on:
   schedule:
@@ -154,7 +154,7 @@ jobs:
       start-mingw-rebase,
       start-cygwin-rebase
     ]
-    uses: ./.github/workflows/advanced.yml
+    uses: ./.github/workflows/prerelease-test.yml
     with:
       binutils_branch: ${{ inputs.rebase_branch || 'rebase-upstream' }}
       gcc_branch: ${{ inputs.rebase_branch || 'rebase-upstream' }}

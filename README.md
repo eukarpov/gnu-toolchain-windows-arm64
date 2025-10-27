@@ -1,6 +1,6 @@
 # Linux-Hosted GNU Cross-Toolchain for Windows Arm64 (MinGW/Cygwin)
 
-[![Build main toolchain](https://github.com/eukarpov/gnu-toolchain-windows-arm64/actions/workflows/main.yml/badge.svg)](https://github.com/eukarpov/gnu-toolchain-windows-arm64/actions/workflows/main.yml) [![Build toolchain variants](https://github.com/eukarpov/gnu-toolchain-windows-arm64/actions/workflows/advanced.yml/badge.svg)](https://github.com/eukarpov/gnu-toolchain-windows-arm64/actions/workflows/advanced.yml) [![Daily rebase](https://github.com/eukarpov/gnu-toolchain-windows-arm64/actions/workflows/rebase.yml/badge.svg)](https://github.com/eukarpov/gnu-toolchain-windows-arm64/actions/workflows/rebase.yml)
+[![Prerelease Test](https://github.com/eukarpov/gnu-toolchain-windows-arm64/actions/workflows/prerelease-test.yml/badge.svg)](https://github.com/eukarpov/gnu-toolchain-windows-arm64/actions/workflows/prerelease-test.yml) [![Daily Rebase](https://github.com/eukarpov/gnu-toolchain-windows-arm64/actions/workflows/rebase.yml/badge.svg)](https://github.com/eukarpov/gnu-toolchain-windows-arm64/actions/workflows/rebase.yml)
 
 GNU Cross-Toolchain for Windows Arm64 with MinGW (`aarch64-w64-mingw32`) and Cygwin
 (`aarch64-pc-cygwin`) targets on Linux hosts (`x86_64-pc-linux-gnu` or
@@ -92,7 +92,7 @@ into the `tests/build/bin` folder.
 # Testing the Toolchain
 
 The toolchain is [tested](https://github.com/eukarpov/gnu-toolchain-windows-arm64/actions/workflows/build-and-test-toolchain.yml)
-with the GCC test suite and against [four example projects builds](https://github.com/eukarpov/gnu-toolchain-windows-arm64/actions/workflows/advanced.yml)
+with the GCC test suite and against [four example projects builds](https://github.com/eukarpov/gnu-toolchain-windows-arm64/actions/workflows/prerelease-test.yml)
 ([OpenSSL](https://openssl-library.org/), [FFmpeg](https://ffmpeg.org/),
 [OpenBLAS](https://github.com/OpenMathLib/OpenBLAS), [libjpeg-turbo](https://github.com/libjpeg-turbo/libjpeg-turbo))
 and their testing suites.
