@@ -2,20 +2,27 @@
 
 source `dirname ${BASH_SOURCE[0]}`/config.sh
 
-ACTION_SHA=$($ROOT_PATH/.github/scripts/get-files-sha.sh $ROOT_PATH $ROOT_PATH/.github/actions/build-toolchain/action.yml)
+md5short() {
+    VALUE=$1
+    echo -n "$VALUE" | md5sum | cut -c1-8
+}
+
+ACTION_SHA=$($ROOT_PATH/.github/scripts/get-files-sha.sh $ROOT_PATH $ROOT_PATH/actions/build-toolchain/action.yml)
 BINUTILS_SHA=$($ROOT_PATH/.github/scripts/get-repository-sha.sh $BINUTILS_REPO $BINUTILS_BRANCH)
 GCC_SHA=$($ROOT_PATH/.github/scripts/get-repository-sha.sh $GCC_REPO $GCC_BRANCH)
 MINGW_SHA=$($ROOT_PATH/.github/scripts/get-repository-sha.sh $MINGW_REPO $MINGW_BRANCH)
 BINUTILS_SCRIPTS_SHA=$($ROOT_PATH/.github/scripts/get-files-sha.sh $ROOT_PATH $ROOT_PATH/.github/scripts/binutils)
 TOOLCHAIN_SCRIPTS_SHA=$($ROOT_PATH/.github/scripts/get-files-sha.sh $ROOT_PATH $ROOT_PATH/.github/scripts/toolchain)
-TOOLCHAIN_CACHE_KEY=$TOOLCHAIN_NAME-toolchain-$ACTION_SHA-$BINUTILS_SHA-$GCC_SHA-$MINGW_SHA-$BINUTILS_SCRIPTS_SHA-$TOOLCHAIN_SCRIPTS_SHA
-RUNTIME_CACHE_KEY=$TOOLCHAIN_NAME-runtime-$ACTION_SHA-$BINUTILS_SHA-$GCC_SHA-$MINGW_SHA-$BINUTILS_SCRIPTS_SHA-$TOOLCHAIN_SCRIPTS_SHA
+COMBINED_SHA=$ACTION_SHA-$BINUTILS_SHA-$GCC_SHA-$MINGW_SHA-$BINUTILS_SCRIPTS_SHA-$TOOLCHAIN_SCRIPTS_SHA
 
 if [[ "$PLATFORM" =~ cygwin ]]; then
     CYGWIN_SHA=$($ROOT_PATH/.github/scripts/get-repository-sha.sh $CYGWIN_REPO $CYGWIN_BRANCH)
-    TOOLCHAIN_CACHE_KEY=$TOOLCHAIN_CACHE_KEY-$CYGWIN_SHA
-    RUNTIME_CACHE_KEY=$RUNTIME_CACHE_KEY-$CYGWIN_SHA
+    COMBINED_SHA=$COMBINED_SHA-$CYGWIN_SHA
 fi
+
+COMBINED_SHA=$(md5short $COMBINED_SHA)
+TOOLCHAIN_CACHE_KEY=$TOOLCHAIN_NAME-toolchain-$COMBINED_SHA
+RUNTIME_CACHE_KEY=$TOOLCHAIN_NAME-runtime-$COMBINED_SHA
 
 echo "toolchain-cache-key=$TOOLCHAIN_CACHE_KEY" >> $GITHUB_OUTPUT
 echo "$TOOLCHAIN_NAME-toolchain-cache-key=$TOOLCHAIN_CACHE_KEY" >> $GITHUB_ENV
