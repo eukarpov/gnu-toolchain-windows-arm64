@@ -135,6 +135,7 @@ jobs:
 
     env:
       PACK_TOOLCHAIN: ${{ matrix.arch == 'aarch64' && (matrix.platform == 'w64-mingw32' || matrix.platform == 'pc-cygwin') && matrix.crt == 'msvcrt' }}
+      UPLOAD_ARTIFACT: false
 
     steps:
       - name: Build toolchain
