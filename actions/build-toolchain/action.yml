@@ -288,7 +288,7 @@ runs:
         .github/scripts/toolchain/pack-runtime.sh
 
     - name: Upload build folder
-      if: ${{ steps.cache-toolchain.outputs.cache-hit != 'true' && failure() }}
+      if: ${{ env.UPLOAD_ARTIFACT == 'true' && steps.cache-toolchain.outputs.cache-hit != 'true' && failure() }}
       uses: actions/upload-artifact@v4
       with:
         name: ${{ env.BUILD_ARTIFACT_NAME }}
@@ -296,7 +296,7 @@ runs:
         path: ${{ env.BUILD_PATH }}
 
     - name: Upload toolchain artifact
-      if: ${{ steps.cache-toolchain.outputs.cache-hit != 'true' && env.PACK_TOOLCHAIN == 'true' }}
+      if: ${{ env.UPLOAD_ARTIFACT == 'true' && steps.cache-toolchain.outputs.cache-hit != 'true' && env.PACK_TOOLCHAIN == 'true' }}
       uses: actions/upload-artifact@v4
       with:
         name: ${{ env.TOOLCHAIN_ARTIFACT_NAME }}
@@ -304,7 +304,7 @@ runs:
         retention-days: 3
 
     - name: Upload runtime artifact
-      if: ${{ steps.cache-runtime.outputs.cache-hit != 'true' && env.PACK_TOOLCHAIN == 'true' }}
+      if: ${{ env.UPLOAD_ARTIFACT == 'true' && steps.cache-runtime.outputs.cache-hit != 'true' && env.PACK_TOOLCHAIN == 'true' }}
       uses: actions/upload-artifact@v4
       with:
         name: ${{ env.RUNTIME_ARTIFACT_NAME }}
