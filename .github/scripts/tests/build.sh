@@ -7,7 +7,16 @@ cd $ROOT_PATH/tests
 if [[ "$RUN_CONFIG" = 1 ]] || [[ ! -f "build/Makefile" ]]; then
   echo "::group::Configure GCC"
     rm -rf build
-    cmake -S . -B build
+
+    if [[ "$UPSTREAM_VALIDATION" = 1 ]]; then
+        HOST_OPTIONS=" \
+            -DUPSTREAM_VALIDATION=1"
+    fi
+
+    cmake -S . \
+      -B build \
+      $HOST_OPTIONS
+
   echo "::endgroup::"
 fi
 
