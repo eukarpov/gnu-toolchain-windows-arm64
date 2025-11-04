@@ -5,10 +5,12 @@ source `dirname ${BASH_SOURCE[0]}`/config.sh
 mkdir -p $TOOLCHAIN_CCACHE_LIB_DIR
 
 echo "::group::Add $TARGET toolchain to ccache"
+
+    CCACHE_PATH=$(which ccache)
     pushd $TOOLCHAIN_CCACHE_LIB_DIR
-        ln -sf /usr/bin/ccache $TARGET-gcc
-        ln -sf /usr/bin/ccache $TARGET-g++
-        ln -sf /usr/bin/ccache $TARGET-c++
+        ln -sf $CCACHE_PATH $TARGET-gcc
+        ln -sf $CCACHE_PATH $TARGET-g++
+        ln -sf $CCACHE_PATH $TARGET-c++
     popd
 
     ls -al $CCACHE_LIB_DIR

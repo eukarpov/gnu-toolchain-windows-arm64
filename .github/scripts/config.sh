@@ -4,6 +4,20 @@ set -e # exit on error
 set -x # echo on
 set -o pipefail # fail of any command in pipeline is an error
 
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    # macOS
+    PROCESSOR=$(uname -m)
+    SYSTEM_TRIPLE=$(clang -dumpmachine | cut -d. -f1)
+    NUM_CORES=$(sysctl -n hw.ncpu)
+elif [[ -f /etc/os-release ]]; then
+    # Linux distributions
+    PROCESSOR=$(uname --machine)
+    SYSTEM_TRIPLE=$(gcc -dumpmachine)
+    NUM_CORES=$(nproc)
+fi
+BUILD=${BUILD:-$SYSTEM_TRIPLE}
+HOST=${HOST:-$SYSTEM_TRIPLE}
+
 # Branches that will be used for build when UPDATE_SOURCES=1.
 BINUTILS_REPO=${BINUTILS_REPO:-eukarpov/binutils-windows-arm64}
 BINUTILS_BRANCH=${BINUTILS_BRANCH:-woarm64}
@@ -39,9 +53,6 @@ else
     CRT=${CRT:-libc}
 fi
 
-PROCESSOR=$(uname --machine)
-BUILD=${BUILD:-$PROCESSOR-pc-linux-gnu}
-HOST=${HOST:-$PROCESSOR-pc-linux-gnu}
 TARGET=$ARCH-$PLATFORM
 TOOLCHAIN_NAME=${TOOLCHAIN_NAME:-$ARCH-$PLATFORM-$CRT}
 
@@ -58,8 +69,8 @@ PATCHES_PATH=${PATCHES_PATH:-$ROOT_PATH/patches}
 BUILD_PATH=${BUILD_PATH:-$ROOT_PATH/build/$HOST/$TOOLCHAIN_NAME}
 CCACHE_DIR_PATH=${CCACHE_DIR_PATH:-$ROOT_PATH/ccache/$HOST/$TOOLCHAIN_NAME}
 ARTIFACT_PATH=${ARTIFACT_PATH:-$ROOT_PATH/artifact}
-BUILD_MAKE_OPTIONS=${BUILD_MAKE_OPTIONS:-V=1 -j$(nproc)}
-CHECK_MAKE_OPTIONS=${CHECK_MAKE_OPTIONS:-V=1 -j$(nproc) -k}
+BUILD_MAKE_OPTIONS=${BUILD_MAKE_OPTIONS:-V=1 -j$NUM_CORES}
+CHECK_MAKE_OPTIONS=${CHECK_MAKE_OPTIONS:-V=1 -j$NUM_CORES -k}
 INSTALL_PATH=${INSTALL_PATH:-~/install}
 TOOLCHAIN_PATH=${TOOLCHAIN_PATH:-$INSTALL_PATH/toolchains/$HOST/$TOOLCHAIN_NAME}
 TOOLCHAIN_FILE=${TOOLCHAIN_FILE:-$ROOT_PATH/.github/cmake/$TARGET.cmake}
@@ -101,7 +112,11 @@ BASH_PATH=${BASH_PATH:-~/$TARGET/bash}
 TESTS_PATH=${TESTS_PATH:-$ROOT_PATH/tests/build/bin/}
 TESTS_PACKAGE_NAME=${TESTS_PACKAGE_NAME:-$TOOLCHAIN_NAME-tests.tar.gz}
 
-CCACHE_LIB_DIR=/usr/lib/ccache
+if [[ "$SYSTEM_TRIPLE" =~ apple ]]; then
+    CCACHE_LIB_DIR=/opt/homebrew/opt/ccache/libexec
+else
+    CCACHE_LIB_DIR=/usr/lib/ccache
+fi
 TOOLCHAIN_CCACHE_LIB_DIR=$TOOLCHAIN_PATH/lib/ccache
 
 if [[ -f $SOURCE_PATH/gcc/gcc/BASE-VER ]]; then
