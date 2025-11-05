@@ -210,6 +210,55 @@ jobs:
           path: ${{ env.CCACHE_DIR_PATH }}
           key: ${{ steps.cache-keys.outputs.ccache-key }}
 
+  build-default-toolchain-macos:
+    name: Build Toolchain macOS Host
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set environment
+        env:
+          BINUTILS_BRANCH: ${{ inputs.binutils_branch }}
+          GCC_BRANCH: ${{ inputs.gcc_branch }}
+          MINGW_BRANCH: ${{ inputs.mingw_branch }}
+          CYGWIN_BRANCH: ${{ inputs.cygwin_branch }}
+          CYGWIN_PACKAGES_BRANCH: ${{ inputs.cygwin_packages_branch }}
+          COCOM_BRANCH: ${{ inputs.cocom_branch }}
+          ROOT_PATH: ${{ github.workspace }}
+          TOOLCHAIN_PATH: ${{ github.workspace }}/cross
+          CCACHE: 1
+          DELETE_BUILD: 1
+        run: |
+          .github/scripts/config-yml.sh
+
+      - name: Get cache keys
+        id: cache-keys
+        run: |
+          .github/scripts/get-cache-keys.sh
+
+      - name: Restore Ccache
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ env.CCACHE_DIR_PATH }}
+          key: ${{ steps.cache-keys.outputs.ccache-key }}
+          restore-keys: ${{ steps.cache-keys.outputs.ccache-restore-keys }}
+
+      - name: Run Build
+        run: |
+          ./build.sh
+
+      - name: Build tests
+        run: |
+          .github/scripts/tests/build.sh
+
+      - name: Save Ccache
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ env.CCACHE_DIR_PATH }}
+          key: ${{ steps.cache-keys.outputs.ccache-key }}
+
   build-aarch64-tests:
     needs: [build-toolchain]
     runs-on: ubuntu-24.04-arm

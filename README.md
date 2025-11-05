@@ -1,13 +1,13 @@
-# Linux-Hosted GNU Cross-Toolchain for Windows Arm64 (MinGW/Cygwin)
+# Linux/macOS-Hosted GNU Cross-Toolchain for Windows Arm64 (MinGW/Cygwin)
 
 [![Prerelease Test](https://github.com/eukarpov/gnu-toolchain-windows-arm64/actions/workflows/prerelease-test.yml/badge.svg)](https://github.com/eukarpov/gnu-toolchain-windows-arm64/actions/workflows/prerelease-test.yml) [![Daily Rebase](https://github.com/eukarpov/gnu-toolchain-windows-arm64/actions/workflows/rebase.yml/badge.svg)](https://github.com/eukarpov/gnu-toolchain-windows-arm64/actions/workflows/rebase.yml)
 
 GNU Cross-Toolchain for Windows Arm64 with MinGW (`aarch64-w64-mingw32`) and Cygwin
-(`aarch64-pc-cygwin`) targets on Linux hosts (`x86_64-pc-linux-gnu` or
-`aarch64-pc-linux-gnu`).
+(`aarch64-pc-cygwin`) targets on Linux/macOS hosts (`x86_64-pc-linux-gnu`, `aarch64-pc-linux-gnu`
+or `arm64-apple-darwin*`).
 It is a **work in progress**, with ongoing efforts to upstream the necessary changes to
 the corresponding repositories. The resulting toolchain produces binaries that can be executed
-on Windows on Arm64 and are built on Linux. The scripts are actively tested on the default
+on Windows on Arm64 and are built on Linux/macOS. The scripts are actively tested on the default
 Ubuntu 22.04 GitHub Actions runners and Ubuntu 22.04 in WSL.
 
 # Known Issues

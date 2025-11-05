@@ -4,6 +4,7 @@ if (NOT DEFINED ENV{TARGET})
   set(ENV{TARGET} "aarch64-w64-mingw32") 
 endif()
 
+set(CMAKE_SYSTEM_NAME Generic)
 set(CMAKE_C_COMPILER "$ENV{TARGET}-gcc")
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fopenmp")
 

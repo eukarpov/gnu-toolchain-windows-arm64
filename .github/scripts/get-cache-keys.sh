@@ -28,5 +28,5 @@ echo "toolchain-cache-key=$TOOLCHAIN_CACHE_KEY" >> $GITHUB_OUTPUT
 echo "$TOOLCHAIN_NAME-toolchain-cache-key=$TOOLCHAIN_CACHE_KEY" >> $GITHUB_ENV
 echo "runtime-cache-key=$RUNTIME_CACHE_KEY" >> $GITHUB_OUTPUT
 echo "$TOOLCHAIN_NAME-runtime-cache-key=$RUNTIME_CACHE_KEY" >> $GITHUB_ENV
-echo "ccache-key=$TARGET-ccache" >> $GITHUB_OUTPUT
-echo "ccache-restore-keys=$TARGET-ccache" >> $GITHUB_OUTPUT
+echo "ccache-key=$TARGET-$HOST-ccache" >> $GITHUB_OUTPUT
+echo "ccache-restore-keys=$TARGET-$HOST-ccache" >> $GITHUB_OUTPUT
