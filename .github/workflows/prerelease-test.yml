@@ -73,6 +73,11 @@ on:
         value: ${{ jobs.build-toolchain.outputs.runtime-cache-key }}
 
 env:
+  BINUTILS_BRANCH: ${{ inputs.bintuils_branch }}
+  GCC_BRANCH: ${{ inputs.gcc_branch }}
+  MINGW_BRANCH: ${{ inputs.mingw_branch }}
+  CYGWIN_BRANCH: ${{ inputs.cygwin_branch }}
+
   UPSTREAM_VALIDATION: ${{ inputs.upstream_validation == 'true' && 1 || 0 }}
   OPENBLAS_REPO: OpenMathLib/OpenBLAS
   OPENBLAS_BRANCH: ${{ inputs.openblas_branch || 'develop' }}
@@ -155,14 +160,15 @@ jobs:
           platform: ${{ matrix.platform }}
           crt: ${{ matrix.crt }}
           pack-toolchain: ${{ env.PACK_TOOLCHAIN }}
-          binutils-branch: ${{ inputs.binutils_branch }}
-          gcc-branch: ${{ inputs.gcc_branch }}
-          mingw-branch: ${{ inputs.mingw_branch }}
-          cygwin-branch: ${{ inputs.cygwin_branch }}
+          binutils-branch: ${{ env.BINUTILS_BRANCH }}
+          gcc-branch: ${{ env.GCC_BRANCH }}
+          mingw-branch: ${{ env.MINGW_BRANCH }}
+          cygwin-branch: ${{ env.CYGWIN_BRANCH }}
           cygwin-packages-branch: ${{ inputs.cygwin_packages_branch }}
           cocom-branch: ${{ inputs.cocom_branch }}
 
-  build-default-toolchain:
+  build-mingw-toolchain-linux-aarch64:
+    name: Build MinGW Toolchain Linux AArch64
     runs-on: ubuntu-24.04-arm
 
     steps:
@@ -171,10 +177,10 @@ jobs:
 
       - name: Set environment
         env:
-          BINUTILS_BRANCH: ${{ inputs.binutils_branch }}
-          GCC_BRANCH: ${{ inputs.gcc_branch }}
-          MINGW_BRANCH: ${{ inputs.mingw_branch }}
-          CYGWIN_BRANCH: ${{ inputs.cygwin_branch }}
+          BINUTILS_BRANCH: ${{ env.BINUTILS_BRANCH }}
+          GCC_BRANCH: ${{ env.GCC_BRANCH }}
+          MINGW_BRANCH: ${{ env.MINGW_BRANCH }}
+          CYGWIN_BRANCH: ${{ env.CYGWIN_BRANCH }}
           CYGWIN_PACKAGES_BRANCH: ${{ inputs.cygwin_packages_branch }}
           COCOM_BRANCH: ${{ inputs.cocom_branch }}
           ROOT_PATH: ${{ github.workspace }}
@@ -210,8 +216,8 @@ jobs:
           path: ${{ env.CCACHE_DIR_PATH }}
           key: ${{ steps.cache-keys.outputs.ccache-key }}
 
-  build-default-toolchain-macos:
-    name: Build Toolchain macOS Host
+  build-mingw-toolchain-macos-arm64:
+    name: Build MinGW Toolchain macOS Arm64
     runs-on: macos-latest
 
     steps:
@@ -220,10 +226,10 @@ jobs:
 
       - name: Set environment
         env:
-          BINUTILS_BRANCH: ${{ inputs.binutils_branch }}
-          GCC_BRANCH: ${{ inputs.gcc_branch }}
-          MINGW_BRANCH: ${{ inputs.mingw_branch }}
-          CYGWIN_BRANCH: ${{ inputs.cygwin_branch }}
+          BINUTILS_BRANCH: ${{ env.BINUTILS_BRANCH }}
+          GCC_BRANCH: ${{ env.GCC_BRANCH  }}
+          MINGW_BRANCH: ${{ env.MINGW_BRANCH }}
+          CYGWIN_BRANCH: ${{ env.CYGWIN_BRANCH }}
           CYGWIN_PACKAGES_BRANCH: ${{ inputs.cygwin_packages_branch }}
           COCOM_BRANCH: ${{ inputs.cocom_branch }}
           ROOT_PATH: ${{ github.workspace }}
@@ -252,6 +258,58 @@ jobs:
       - name: Build tests
         run: |
           .github/scripts/tests/build.sh
+
+      - name: Save Ccache
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ env.CCACHE_DIR_PATH }}
+          key: ${{ steps.cache-keys.outputs.ccache-key }}
+
+  build-mingw-toolchain-windows-arm64:
+    name: Build MinGW Toolchain Windows Arm64
+    runs-on: ubuntu-24.04-arm
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set environment
+        env:
+          BINUTILS_BRANCH: ${{ env.BINUTILS_BRANCH }}
+          GCC_BRANCH: ${{ env.GCC_BRANCH }}
+          MINGW_BRANCH: ${{ env.MINGW_BRANCH }}
+          CYGWIN_BRANCH: ${{ env.CYGWIN_BRANCH }}
+          CYGWIN_PACKAGES_BRANCH: ${{ inputs.cygwin_packages_branch }}
+          COCOM_BRANCH: ${{ inputs.cocom_branch }}
+          ROOT_PATH: ${{ github.workspace }}
+          TOOLCHAIN_PATH: ${{ github.workspace }}/cross
+          CCACHE: 1
+          DELETE_BUILD: 1
+        run: |
+          .github/scripts/config-yml.sh
+
+      - name: Checkout zlib
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.ZLIB_REPO }}
+          ref: ${{ env.ZLIB_BRANCH }}
+          path: ${{ env.SOURCE_PATH }}/zlib
+
+      - name: Get cache keys
+        id: cache-keys
+        run: |
+          .github/scripts/get-cache-keys.sh
+
+      - name: Restore Ccache
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ env.CCACHE_DIR_PATH }}
+          key: ${{ steps.cache-keys.outputs.ccache-key }}
+          restore-keys: ${{ steps.cache-keys.outputs.ccache-restore-keys }}
+
+      - name: Run Build
+        run: |
+          ./build.sh --native-toolchain
 
       - name: Save Ccache
         uses: actions/cache/save@v4

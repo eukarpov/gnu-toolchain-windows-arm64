@@ -14,7 +14,31 @@ if [[ "$RUN_CONFIG" = 1 ]] || [[ ! -f "$BINUTILS_BUILD_PATH/Makefile" ]]; then
         if [[ "$DEBUG" = 1 ]]; then
             HOST_OPTIONS="$HOST_OPTIONS \
                 --enable-debug"
+        else
+            HOST_OPTIONS="$HOST_OPTIONS \
+                --disable-debug"
+            CFLAGS="$CFLAGS -O2"
+            CXXFLAGS="$CXXFLAGS -O2"
+            LDFLAGS="$LDFLAGS -s"
         fi
+
+       TARGET_OPTIONS="$TARGET_OPTIONS \
+            --disable-nls"
+
+        case "$HOST" in
+            *mingw32*)
+                TARGET_OPTIONS="$TARGET_OPTIONS \
+                    --disable-gdb \
+                    --without-zstd"
+
+                CFLAGS="$CFLAGS -I$INSTALL_PATH/zlib/$TARGET/include"
+                LDFLAGS="$LDFLAGS $INSTALL_PATH/zlib/$TARGET/lib/libz-static.a"
+                ;;
+            *)
+                HOST_OPTIONS="$HOST_OPTIONS \
+                    --with-system-zlib"
+                ;;
+        esac
 
         case "$PLATFORM" in
             *cygwin*)
@@ -29,7 +53,6 @@ if [[ "$RUN_CONFIG" = 1 ]] || [[ ! -f "$BINUTILS_BUILD_PATH/Makefile" ]]; then
                     --enable-install-libiberty \
                     --with-sysroot=$TOOLCHAIN_PATH \
                     --with-build-sysroot=$TOOLCHAIN_PATH \
-                    --with-system-zlib \
                     --with-gcc-major-version-only \
                     lt_cv_deplibs_check_method=pass_all"
                 ;;
@@ -38,11 +61,13 @@ if [[ "$RUN_CONFIG" = 1 ]] || [[ ! -f "$BINUTILS_BUILD_PATH/Makefile" ]]; then
                     --enable-lto \
                     --enable-64-bit-bfd \
                     --disable-werror \
-                    --with-libiconv-prefix=$TOOLCHAIN_PATH \
-                    --with-system-zlib"
+                    --with-libiconv-prefix=$TOOLCHAIN_PATH"
                 ;;
         esac
 
+        CFLAGS="$CFLAGS" \
+        CXXFLAGS="$CXXFLAGS" \
+        LDFLAGS="$LDFLAGS" \
         $SOURCE_PATH/binutils/configure \
             --prefix=$TOOLCHAIN_PATH \
             --build=$BUILD \

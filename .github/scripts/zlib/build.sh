@@ -2,7 +2,7 @@
 
 source `dirname ${BASH_SOURCE[0]}`/../config.sh
 
-ZLIB_BUILD_PATH=$BUILD_PATH/zlib
+ZLIB_BUILD_PATH=$ROOT_PATH/build/$TARGET/zlib
 
 cd $SOURCE_PATH/zlib
 

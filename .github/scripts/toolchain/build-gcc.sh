@@ -14,7 +14,31 @@ if [[ "$RUN_CONFIG" = 1 ]] || [[ ! -f "$GCC_BUILD_PATH/Makefile" ]]; then
         if [[ "$DEBUG" = 1 ]]; then
             HOST_OPTIONS="$HOST_OPTIONS \
                 --enable-debug"
+        else
+            HOST_OPTIONS="$HOST_OPTIONS \
+                --disable-debug"
+            CFLAGS="$CFLAGS -O2"
+            CXXFLAGS="$CXXFLAGS -O2"
+            LDFLAGS="$LDFLAGS -s"
         fi
+
+        TARGET_OPTIONS="$TARGET_OPTIONS \
+            --disable-nls \
+            --disable-multilib"
+
+        case "$HOST" in
+            *mingw32*)
+                TARGET_OPTIONS="$TARGET_OPTIONS \
+                    --without-zstd"
+
+                CFLAGS="$CFLAGS -I$INSTALL_PATH/zlib/$TARGET/include"
+                LDFLAGS="$LDFLAGS -Wl,--dynamicbase,--nxcompat,--high-entropy-va $INSTALL_PATH/zlib/$TARGET/lib/libz-static.a"
+                ;;
+            *)
+                HOST_OPTIONS="$HOST_OPTIONS \
+                    --with-system-zlib"
+                ;;
+        esac
 
         case "$ARCH" in
             x86_64)
@@ -55,7 +79,6 @@ if [[ "$RUN_CONFIG" = 1 ]] || [[ ! -f "$GCC_BUILD_PATH/Makefile" ]]; then
                     --disable-symvers \
                     --with-gcc-major-version-only \
                     --with-dwarf2 \
-                    --with-system-zlib \
                     --with-default-libstdcxx-abi=gcc4-compatible \
                     --without-libiconv-prefix \
                     --without-libintl-prefix"
@@ -82,8 +105,7 @@ if [[ "$RUN_CONFIG" = 1 ]] || [[ ! -f "$GCC_BUILD_PATH/Makefile" ]]; then
                     --disable-win32-registry \
                     --disable-werror \
                     --disable-symvers \
-                    --with-libiconv \
-                    --with-system-zlib"
+                    --with-libiconv"
                 ;;
         esac
 
@@ -103,15 +125,17 @@ if [[ "$RUN_CONFIG" = 1 ]] || [[ ! -f "$GCC_BUILD_PATH/Makefile" ]]; then
         esac
 
         # REMOVED: --enable-languages=ada,go,jit
+        CFLAGS="$CFLAGS" \
+        CXXFLAGS="$CFLAGS" \
+        LDFLAGS="$LDFLAGS" \
         $SOURCE_PATH/gcc/configure \
             --prefix=$TOOLCHAIN_PATH \
             --build=$BUILD \
             --host=$HOST \
             --target=$TARGET \
             --enable-static \
-            --enable-languages=c,c++,fortran,lto,m2,objc,obj-c++ \
+            --enable-languages=c,c++,fortran,lto,objc,obj-c++ \
             --disable-bootstrap \
-            --disable-multilib \
             --with-gnu-as \
             --with-gnu-ld \
             $HOST_OPTIONS \
