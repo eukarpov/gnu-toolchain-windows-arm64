@@ -1,32 +1,24 @@
-# Linux/macOS-Hosted GNU Cross-Toolchain for Windows Arm64 (MinGW/Cygwin)
+# Windows-Native and Linux/macOS-Hosted GNU Toolchain for Windows Arm64 (MinGW/Cygwin) targets
 
 [![Prerelease Test](https://github.com/eukarpov/gnu-toolchain-windows-arm64/actions/workflows/prerelease-test.yml/badge.svg)](https://github.com/eukarpov/gnu-toolchain-windows-arm64/actions/workflows/prerelease-test.yml) [![Daily Rebase](https://github.com/eukarpov/gnu-toolchain-windows-arm64/actions/workflows/rebase.yml/badge.svg)](https://github.com/eukarpov/gnu-toolchain-windows-arm64/actions/workflows/rebase.yml)
 
-GNU Cross-Toolchain for Windows Arm64 with MinGW (`aarch64-w64-mingw32`) and Cygwin
-(`aarch64-pc-cygwin`) targets on Linux/macOS hosts (`x86_64-pc-linux-gnu`, `aarch64-pc-linux-gnu`
-or `arm64-apple-darwin*`).
+Windows-native and Linux/macOS-hosted GNU Toolchain for Windows Arm64, targeting MinGW (`aarch64-w64-mingw32`) and Cygwin
+(`aarch64-pc-cygwin`), built on hosts such as (`aarch64-w64-mingw32`, `x86_64-pc-linux-gnu`, `aarch64-pc-linux-gnu`, `arm64-apple-darwin*` or others).
 It is a **work in progress**, with ongoing efforts to upstream the necessary changes to
-the corresponding repositories. The resulting toolchain produces binaries that can be executed
-on Windows on Arm64 and are built on Linux/macOS. The scripts are actively tested on the default
+the corresponding repositories. The resulting toolchain produces binaries that can be run
+on Windows Arm64. The scripts are actively tested on the default
 Ubuntu 22.04 GitHub Actions runners and Ubuntu 22.04 in WSL.
 
 # Known Issues
 
-This toolchain is not yet ready for real-world use. Problems and missing parts are listed in
-the [issues](https://github.com/eukarpov/gnu-toolchain-windows-arm64/issues). Please,
-report all issues, even if the issue is, e.g., GCC-specific, here.
+`aarch64-w64-mingw32` target has reached sufficient quality to build itself natively and pass tests for many packages.
+`aarch64-pc-cygwin` target is not yet ready for real-world use. Problems and missing parts are listed in
+the [issues](https://github.com/eukarpov/gnu-toolchain-windows-arm64/issues). Please report all issues, including those specific to Binutils/GCC/MinGW/Cygwin.
 
-# Installing Build Dependencies
+# Building the Native GNU Toolchain for Windows Arm64
 
-The [main build script](https://github.com/eukarpov/gnu-toolchain-windows-arm64/blob/main/build.sh)
-installs its dependencies automatically when the `RUN_BOOTSTRAP=1` environment variable is defined,
-which is the default. To see what will be installed refer to
-[`.github/scripts/install-dependencies.sh`](https://github.com/eukarpov/gnu-toolchain-windows-arm64/blob/main/.github/scripts/install-dependencies.sh).
-
-# Building the Cross-Compiler
-
-To build the cross-compiler and install it into a `~/cross-aarch64-w64-mingw32-msvcrt` folder,
-follow these steps:
+To build the native compiler, cross-compilation on Linux/macOS host is still needed.
+Once built, the toolchain can be moved to a Windows host to build required packages natively.
 
 1. Clone the repository:
    ```bash
@@ -40,8 +32,17 @@ follow these steps:
 
 3. Run the build script:
    ```bash
-   ./build.sh
+   ./build.sh --native-toolchain
    ```
+
+# Building the Cross-Toolchain
+
+To build the cross-toolchain and install it into a `~/install/toolchains/<host name>/aarch64-w64-mingw32-msvcrt` folder,
+run the build script:
+
+```bash
+./build.sh
+```
 
 The toolchain uses the `aarch64-w64-mingw32` target by default. The `PLATFORM`
 variable should be specified to change the target to `aarch64-pc-cygwin`.
@@ -77,7 +78,7 @@ The build script does multiple things:
 
 After building the toolchain, to build a simple C source code file run:
 ```bash
-export PATH="~/cross-aarch64-w64-mingw32-msvcrt/bin:$PATH"
+export PATH="~/install/toolchains/<host name>/aarch64-w64-mingw32-msvcrt/bin:$PATH"
 aarch64-w64-mingw32-gcc hello.c -o hello.exe
 ```
 
@@ -88,6 +89,13 @@ To build a set of basic AArch64-specific tests:
 
 The test script requires a working CMake executable in the environment and will place the resulting binaries
 into the `tests/build/bin` folder.
+
+# Installing Build Dependencies
+
+The [main build script](https://github.com/eukarpov/gnu-toolchain-windows-arm64/blob/main/build.sh)
+installs its dependencies automatically when the `RUN_BOOTSTRAP=1` environment variable is defined,
+which is the default. To see what will be installed refer to
+[`.github/scripts/install-dependencies.sh`](https://github.com/eukarpov/gnu-toolchain-windows-arm64/blob/main/.github/scripts/install-dependencies.sh).
 
 # Testing the Toolchain
 

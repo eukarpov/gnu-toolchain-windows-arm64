@@ -83,8 +83,8 @@ OPENBLAS_BRANCH=${OPENBLAS_BRANCH:-develop}
 
 ZLIB_REPO=${ZLIB_REPO:-madler/zlib}
 ZLIB_BRANCH=${ZLIB_BRANCH:-master}
-ZLIB_PATH=${ZLIB_PATH:-~/zlib}
-ZLIB_TESTS_PATH=${ZLIB_TESTS_PATH:-~/zlib-tests}
+ZLIB_PATH=${ZLIB_PATH:-$INSTALL_PATH/zlib/$TARGET}
+ZLIB_TESTS_PATH=${ZLIB_TESTS_PATH:-$INSTALL_PATH/zlib/tests/$TARGET}
 
 LIBXML2_REPO=${LIBXML2_REPO:-GNOME/libxml2}
 LIBXML2_BRANCH=${LIBXML2_BRANCH:-master}
@@ -135,7 +135,7 @@ RESET_SOURCES=${RESET_SOURCES:-0} # Reset source code repositories before update
 REBASE_SOURCES=${REBASE_SOURCES:-0} # Together with the update, rebase repositories
                                     # to the baseline branches and push the result.
                                     # Unsupported when FLAT_CLONE=1.
-RUN_CONFIG=${RUN_CONFIG:-1} # Run configuration step.
+RUN_CONFIG=${RUN_CONFIG:-0} # Run configuration step.
 RUN_INSTALL=${RUN_INSTALL:-1} # Run installation step.
 DELETE_BUILD=${DELETE_BUILD:-0} # Delete build folders after successful builds.
 
