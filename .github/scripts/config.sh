@@ -4,15 +4,24 @@ set -e # exit on error
 set -x # echo on
 set -o pipefail # fail of any command in pipeline is an error
 
+PROCESSOR=$(uname -m)
 if [[ "$OSTYPE" == "darwin"* ]]; then
     # macOS
-    PROCESSOR=$(uname -m)
-    SYSTEM_TRIPLE=$(clang -dumpmachine | cut -d. -f1)
+    if command -v clang &> /dev/null; then
+        SYSTEM_TRIPLE=$(clang -dumpmachine | cut -d. -f1)
+    else
+        SYSTEM_TRIPLE=$(echo "$PROCESSOR-apple-$(uname -o)$(uname -r)" \
+            | tr '[:upper:]' '[:lower:]' \
+            | cut -d. -f1)
+    fi
     NUM_CORES=$(sysctl -n hw.ncpu)
 elif [[ -f /etc/os-release ]]; then
     # Linux distributions
-    PROCESSOR=$(uname --machine)
-    SYSTEM_TRIPLE=$(gcc -dumpmachine)
+    if command -v gcc &> /dev/null; then
+        SYSTEM_TRIPLE=$(gcc -dumpmachine)
+    else
+        SYSTEM_TRIPLE=$PROCESSOR-pc-linux
+    fi
     NUM_CORES=$(nproc)
 fi
 BUILD=${BUILD:-$SYSTEM_TRIPLE}
