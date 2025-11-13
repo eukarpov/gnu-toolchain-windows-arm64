@@ -67,8 +67,13 @@ void printf_test()
     assert_snprintf("float %E => 1.234560E+00", "float %%E => %E", f);
     assert_snprintf("float %g => 1.23456", "float %%g => %g", f);
     assert_snprintf("float %G => 1.23456", "float %%G => %G", f);
+#if defined _UCRT
+    assert_snprintf("float %a => 0x1.3c0c200000000p+0", "float %%a => %a", f);
+    assert_snprintf("float %A => 0X1.3C0C200000000P+0", "float %%A => %A", f);
+#else // MSVCRT
     assert_snprintf("float %a => 0x1.3c0c2p+0", "float %%a => %a", f);
     assert_snprintf("float %A => 0X1.3C0C2P+0", "float %%A => %A", f);
+#endif
 
     assert_snprintf("double %f => 1.234560", "double %%f => %f", d);
     assert_snprintf("double %F => 1.234560", "double %%F => %F", d);
