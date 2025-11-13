@@ -29,7 +29,7 @@ enum {TEST_PASSED, TEST_FAILED, TEST_SKIPPED};
 
 #define ASSERT_STREQ(VALUE1, VALUE2) \
     if (strcmp((VALUE1), (VALUE2))) { \
-        printf("%s:%d ASSERT_EQ(%s, %s) failed\n", __FILE__, __LINE__, #VALUE1, #VALUE2); \
+        printf("%s:%d ASSERT_EQ(%s: '%s', %s: '%s') failed\n", __FILE__, __LINE__, #VALUE1, VALUE1, #VALUE2, VALUE2); \
         longjmp(gtest_jmp, TEST_FAILED); \
     }
 
