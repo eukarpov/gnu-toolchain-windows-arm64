@@ -49,7 +49,7 @@ void assert_snprintf(const char* expected, const char* format, ...)
 
     const int SIZE = 1024;
     char actual[SIZE];
-    snprintf(actual, SIZE, format, list);
+    vsnprintf(actual, SIZE, format, list);
     ASSERT_STREQ(expected, actual);
 
     va_end(list);
