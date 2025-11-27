@@ -2,8 +2,6 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fopenmp")
 
-set(CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE)
-
 cmake_minimum_required(VERSION 3.14)
 project(aarch64_mingw_tests)
 add_library(simple-dll SHARED dll.c)
