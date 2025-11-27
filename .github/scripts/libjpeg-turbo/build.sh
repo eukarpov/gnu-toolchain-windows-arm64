@@ -18,7 +18,6 @@ fi
 
 echo "::group::Build libjpeg-turbo"
     cmake --build $LIBJPEG_TURBO_BUILD_PATH ${BUILD_MAKE_OPTIONS//V=1/-v}
-    cp -r testimages/ $LIBJPEG_TURBO_BUILD_PATH/
     (cd $LIBJPEG_TURBO_BUILD_PATH && ctest -R "^.*-cp$" )
 echo "::endgroup::"
 
