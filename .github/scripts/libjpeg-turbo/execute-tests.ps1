@@ -7,7 +7,7 @@ Write-Output '::group::Test libjpeg-turbo'
 
     $jobs = (Get-WmiObject -Class Win32_ComputerSystem).NumberOfLogicalProcessors
 
-    Push-Location $env:LIBJPEG_TURBO_TESTS_PATH
+    Push-Location $env:LIBJPEG_TURBO_TESTS_PATH\bin
     & ctest -E $excluded_tests -j $jobs
     Pop-Location
 Write-Output "::endgroup::"

@@ -361,7 +361,7 @@ jobs:
         if: ${{ env.UPSTREAM_VALIDATION == '0' || matrix.platform == 'w64-mingw32' }}
         run: |
           .github/scripts/toolchain/unpack.sh
-  
+
       - name: Build MinGW toolchain tests
         if: ${{ matrix.platform == 'w64-mingw32' }}
         run: |
@@ -514,7 +514,7 @@ jobs:
           .github/scripts/install-dependencies.sh
 
       - name: Extract cache keys
-        run: | 
+        run: |
           .github/scripts/extract-cache-keys.sh '${{ toJSON(needs.build-toolchain.outputs) }}'
 
       - name: Download ${{ env.TOOLCHAIN_NAME }} toolchain
@@ -596,7 +596,7 @@ jobs:
       - name: Unpack toolchain
         run: |
           .github/scripts/toolchain/unpack.sh
-    
+
       - name: Build Bash
         run: |
           .github/scripts/bash/build.sh
@@ -636,7 +636,7 @@ jobs:
       - name: Unpack toolchain
         run: |
           .github/scripts/toolchain/unpack.sh
-    
+
       - name: Build OpenBLAS
         run: |
           .github/scripts/openblas/build.sh
@@ -651,7 +651,7 @@ jobs:
           name: ${{ env.TOOLCHAIN_NAME }}-openblas-tests
           path: ${{ env.ARTIFACT_PATH }}/${{ env.TOOLCHAIN_NAME }}-openblas-tests.zip
           retention-days: 3
-        
+
   execute-openblas-tests:
     needs: [
       build-toolchain,
@@ -701,7 +701,7 @@ jobs:
       - name: Unpack OpenBLAS tests
         run: |
           .github/scripts/openblas/unpack-tests.ps1
-  
+
       - name: Execute OpenBLAS tests
         shell: bash
         run: |
@@ -744,7 +744,7 @@ jobs:
       - name: Unpack toolchain
         run: |
           .github/scripts/toolchain/unpack.sh
-  
+
       - name: Build zlib
         run: |
           .github/scripts/zlib/build.sh
@@ -887,7 +887,7 @@ jobs:
       - name: Pack OpenSSL tests
         run: |
           .github/scripts/openssl/pack-tests.sh
-    
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
@@ -969,7 +969,7 @@ jobs:
       - name: Unpack zlib
         run: |
           .github/scripts/zlib/unpack.ps1
-  
+
       - name: Execute OpenSSL tests
         run: |
           .github/scripts/openssl/execute-tests.ps1
@@ -995,10 +995,6 @@ jobs:
           repository: ${{ env.LIBJPEG_TURBO_REPO }}
           ref: ${{ env.LIBJPEG_TURBO_BRANCH }}
           path: ${{ env.SOURCE_PATH }}/libjpeg-turbo
-
-      - name: Patch libjpeg-turbo
-        run: |
-          .github/scripts/libjpeg-turbo/patch.sh
 
       - name: Extract cache keys
         run: |
