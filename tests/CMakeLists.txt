@@ -4,7 +4,15 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fopenmp")
 
 cmake_minimum_required(VERSION 3.14)
 project(aarch64_mingw_tests)
-add_library(simple-dll SHARED dll.c)
+
+add_library(def-export SHARED
+  def-export.c
+  def-export.def
+)
+
+add_library(dll-export SHARED
+  dll-export.c
+)
 
 set(SOURCES
   bigdata-test.c
@@ -46,7 +54,8 @@ add_executable(aarch64-mingw-tests ${SOURCES})
 
 target_link_libraries(
   aarch64-mingw-tests
-  simple-dll
+  def-export
+  dll-export
 )
 
 set_source_files_properties(large-alignment-test.c PROPERTIES
