@@ -1,4 +1,0 @@
-LIBRARY     dll-auto
-EXPORTS
-    add_c_def
-    add_std_def
