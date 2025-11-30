@@ -15,6 +15,7 @@ TEST(Aarch64MinGW, OmpTest);
 TEST(Aarch64MinGW, PrintfDoubleTest);
 TEST(Aarch64MinGW, SEHFregpTest);
 TEST(Aarch64MinGW, SEHLargeFunctionTest);
+TEST(Aarch64MinGW, SEHSTPNonconsecutive);
 TEST(Aarch64MinGW, SEHStackProbing);
 TEST(Aarch64MinGW, SJLJTest);
 TEST(Aarch64MinGW, SscanfDoubleTest);
@@ -73,6 +74,7 @@ int main(int argc, char **argv) {
         DECLARE_TEST(Aarch64MinGW, ExceptionChainTest),
         DECLARE_TEST(Aarch64MinGW, SEHFregpTest),
         DECLARE_TEST(Aarch64MinGW, SEHLargeFunctionTest),
+        DECLARE_TEST(Aarch64MinGW, SEHSTPNonconsecutive),
         DECLARE_TEST(Aarch64MinGW, SEHStackProbing),
         DECLARE_TEST(Aarch64MinGW, UnwindStackTest),
 #endif
