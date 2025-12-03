@@ -47,6 +47,7 @@ else()
     seh-large-func.cpp
     seh-stack-probing.cpp
     seh-stp-nonconsecutive.cpp
+    seh-stp-unspec.cpp
     unwind-stack-test.c
   )
 endif()

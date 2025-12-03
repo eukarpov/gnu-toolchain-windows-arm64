@@ -74,7 +74,7 @@ on:
 
 env:
   BINUTILS_BRANCH: ${{ inputs.bintuils_branch }}
-  GCC_BRANCH: ${{ inputs.gcc_branch }}
+  GCC_BRANCH: ${{ inputs.gcc_branch || 'seh-add-unwinding-unspec-stp' }}
   MINGW_BRANCH: ${{ inputs.mingw_branch }}
   CYGWIN_BRANCH: ${{ inputs.cygwin_branch }}
 
