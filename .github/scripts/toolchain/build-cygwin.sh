@@ -33,7 +33,7 @@ if [[ "$RUN_CONFIG" = 1 ]] || [[ ! -f "$CYGWIN_BUILD_PATH/Makefile" ]]; then
 
         # ADDED: --disable-doc
         # ADDED: --disable-dumper
-        CXXFLAGS_FOR_TARGET="-Wno-error -Wno-narrowing" \
+        CXXFLAGS_FOR_TARGET="-Wno-error -Wno-narrowing -std=gnu++17" \
         $CYGWIN_SOURCE_PATH/configure \
             --prefix=$TOOLCHAIN_PATH \
             --build=$HOST \
